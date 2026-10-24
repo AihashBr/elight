@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { HomeBackground } from './background/home-background';
 
 type AiState = 'thinking' | 'generating' | 'ready';
 
@@ -12,8 +13,6 @@ interface Feature {
   title: string;
   text: string;
 }
-
-const THEME_KEY = 'elight-theme';
 
 const SESSIONS: DemoSession[] = [
   {
@@ -36,13 +35,12 @@ const SESSIONS: DemoSession[] = [
 
 @Component({
   selector: 'app-home',
+  imports: [HomeBackground],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  protected readonly theme = signal<'dark' | 'light'>(this.initialTheme());
-
   protected readonly aiState = signal<AiState>('thinking');
   protected readonly prompt = signal(SESSIONS[0].prompt);
   protected readonly output = signal('');
@@ -81,7 +79,6 @@ export class Home {
 
   constructor() {
     inject(DestroyRef).onDestroy(() => clearTimeout(this.timer));
-    this.applyTheme(this.theme());
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.output.set(SESSIONS[0].output);
@@ -89,17 +86,6 @@ export class Home {
       this.aiState.set('ready');
     } else {
       this.runSession(0);
-    }
-  }
-
-  protected toggleTheme(): void {
-    const next = this.theme() === 'dark' ? 'light' : 'dark';
-    this.theme.set(next);
-    this.applyTheme(next);
-    try {
-      localStorage.setItem(THEME_KEY, next);
-    } catch {
-      // Storage can be unavailable (private mode); the toggle still works for this visit.
     }
   }
 
@@ -127,21 +113,5 @@ export class Home {
       };
       stream();
     }, 1400);
-  }
-
-  private initialTheme(): 'dark' | 'light' {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      if (stored === 'dark' || stored === 'light') {
-        return stored;
-      }
-    } catch {
-      // Fall through to the system preference.
-    }
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  }
-
-  private applyTheme(theme: 'dark' | 'light'): void {
-    document.documentElement.dataset['theme'] = theme;
   }
 }

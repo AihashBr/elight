@@ -1,27 +1,6 @@
 // Elight design tokens: single source of truth for visual values.
 // See .claude/skills/elight-design-tokens for the rules behind them.
-
-@mixin light-values {
-  --bg: #f6f7fa;
-  --surface-1: #ffffff;
-  --surface-2: #f0f2f7;
-  --surface-3: #e6e9f1;
-  --border: #d3d8e4;
-
-  --text: #14171f;
-  --text-muted: #4a5166;
-  --text-faint: #7a8197;
-
-  --accent: #b87900;
-  // Dark ink keeps >= 4.5:1 on the darker light-theme accent (white would be ~3:1).
-  --accent-ink: #1a1400;
-  --accent-glow: color-mix(in srgb, var(--accent) 22%, transparent);
-
-  --shadow-1: 0 1px 2px rgb(20 23 31 / 0.08);
-  --shadow-2: 0 8px 24px rgb(20 23 31 / 0.1);
-
-  color-scheme: light;
-}
+// The site ships dark only.
 
 :root {
   // color: surfaces (back to front)
@@ -91,16 +70,6 @@
   --gutter: clamp(16px, 4vw, 48px);
 
   color-scheme: dark;
-}
-
-:root[data-theme='light'] {
-  @include light-values;
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) {
-    @include light-values;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

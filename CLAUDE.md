@@ -6,6 +6,7 @@ Game engine focused on local AI. Targets desktop, mobile and the browser.
 
 - Everything in the project is written in English: code, docs, skills, commit messages.
 - The user commits manually. Never commit unless asked.
+- The user implements the app code (routes, pages, components). Claude documents plans in `docs/` and only writes app code when explicitly asked. Planned routes are in `docs/routes.md`.
 - Project skills live in `.claude/skills/` (design and Three.js guidance).
 - Notes live in `docs/`: `vision.md` (what Elight is), `ideas.md` (loose ideas, open questions), `decisions/` (one file per decision). Only record decisions the user has confirmed.
 
