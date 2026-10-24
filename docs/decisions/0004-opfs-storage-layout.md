@@ -9,7 +9,8 @@ All persistent files live in the browser's OPFS (Origin Private File System), wi
 
 ```
 /projects/    user content, one subfolder per game
-  <game>/       3D models, textures, audio, scenes, scripts, game data
+  <id>/         one folder per game, named by its project ID (decision 0005);
+                3D models, textures, audio, scenes, scripts, game data
 /engine/      engine-internal files, not editable by the user
   models/       AI models (downloaded once)
   ...           caches and other engine data, each kind in its own subfolder

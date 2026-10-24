@@ -23,6 +23,10 @@ project/src/app/
 - Inside a `services/` folder, one file per service (for example `world-editor.service.ts`), no subfolders.
 - External libraries (Three.js and others) are never used directly; each one is wrapped by a service in `app/services/` (decision 0008).
 
+## Styles
+
+Global styles are centralized in `project/src/styles/` and loaded by `project/src/styles.scss`: tokens (colors, sizes), breakpoints, base element styles, and base classes for buttons, inputs, cards, modals and panels. Components use them and keep only their own layout. See `docs/decisions/0017-central-styles.md`.
+
 ## Shared components
 
 ### Messages

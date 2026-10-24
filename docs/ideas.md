@@ -37,7 +37,6 @@ Resolved: Qwen, about 2B parameters, with WebLLM (decision 0012). Notes below ar
 ## Open questions
 
 - What kind of game should it run first? (RPG with talking NPCs, simulation, narrative, other)
-- 2D, 3D, or open?
 - Who is the audience at the start?
 - Minimum hardware to support?
 - Is the first deliverable the editor, the runtime, or a demo game?

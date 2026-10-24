@@ -7,6 +7,8 @@
 
 Page where the user manages their games: create, open, import, export, rename and delete projects. Everything is stored locally in the browser; there is no back-end (decisions 0001 to 0004).
 
+Reached from the home page (`/`) through the "Start" button and the "Projects" link in the navigation.
+
 ## Storage
 
 Projects live in OPFS under `/projects`, one folder per game (see `docs/decisions/0004-opfs-storage-layout.md`). The page never reads or writes `/engine` (AI models and internal files).

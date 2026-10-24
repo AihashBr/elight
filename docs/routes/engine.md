@@ -55,7 +55,7 @@ project/src/app/pages/engine/
 
 | Component | Description |
 |---|---|
-| Top bar | Shows the project name, the scene selector and the "Add object", "Reload scene", "Play" and "Windows" buttons. |
+| Top bar | Shows the project name, the save state, the scene selector and the "Undo", "Redo", "Add object", "Reload scene", "Play" and "Windows" buttons. |
 | Add object (modal) | Lists the available objects, with a search bar, and adds the chosen one to the scene. |
 | Add attribute (modal) | Same as the add object modal, for the project's `attributes/` folder; adds the chosen attribute to the selected object (decision 0011). |
 | Play (modal) | Runs the game in full screen, with a "Close" button (decision 0010). |
@@ -88,6 +88,8 @@ The panel layout (sizes, collapsed and full-screen panels) is saved for the whol
 | Item | Action |
 |---|---|
 | Project name | From `game.json`. |
+| Save state | "Saved", "Saving..." or "Not saved" (decision 0015). |
+| Undo / Redo | Same as `Ctrl+Z` / `Ctrl+Shift+Z` (decision 0015). |
 | Scene selector | Switch, create, rename and delete scenes (decision 0007). |
 | Add object | Opens the add object modal. |
 | Reload scene | Rebuilds the open scene, calling `onRender(render, parent)` again. Property changes of an object's own properties only show after this (decision 0006). |
@@ -128,6 +130,30 @@ Shows the selected object, in sections:
 - `(i)` is the info icon, shown when a property has `info`; its text appears on hover or tap.
 - A value outside its limits is not accepted; the field shows the error.
 - With no selection, the panel shows "Select an object".
+
+## World editor
+
+The world editor tab shows the open scene in 3D and edits it.
+
+- **Editor camera:** its own camera, separate from the scene's cameras. Orbit with the left mouse button or one finger; pan with the right or middle button or two fingers; zoom with the wheel or a pinch. `F` (or double-clicking an item in the world items menu) frames the selected object.
+- **Selection:** clicking an object selects it; clicking empty space clears the selection. Selection is shared with the world items menu and the properties panel (selection service).
+- **Gizmos:** move, rotate and scale handles on the selected object. Shortcuts: `W` move, `E` rotate, `R` scale. Holding `Ctrl` snaps (0.5 units, 15 degrees, 0.1 scale). A toggle switches between world and local axes.
+- **Other shortcuts:** `Delete` removes the selected object; `Ctrl+D` duplicates it. Both can be undone (decision 0015).
+- **Helpers:** a ground grid and an axes indicator. They are editor-only and never appear in the game.
+- Gizmos, grid and picking go through the render service, like everything else (decision 0008).
+- Objects with a missing or broken class show as a wireframe box (decision 0006).
+
+## Script editor
+
+Edits object and attribute classes with CodeMirror 6 (decision 0015). Several files can be open at once, one sub-tab each. Validator errors show inline on save.
+
+## Logs
+
+- **Levels:** info, warning, error.
+- **Sources:** engine, game (the running game's console, sent from the iframe with `postMessage`), AI, terminal.
+- Filters by level and by source, and a "Clear" button.
+- Keeps the last 1000 entries.
+- The tab title shows a badge with the number of new errors.
 
 ## Add object modal
 

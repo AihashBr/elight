@@ -52,7 +52,7 @@ The editor and `index.html` each have their own code. They are not the same code
 | Physics service (Ammo.js) | no | yes |
 | `onRender(render, parent)`, once per object | yes | yes |
 | `onStart()` / `onUpdate(delta)` | no | yes |
-| Editing tools (selection, gizmos, properties) | yes | no |
+| Editing tools (selection, gizmos, properties; see `docs/routes/engine.md`) | yes | no |
 
 Both render services must offer the same API to object classes (`onRender(render, parent)`, decision 0006), so an object looks the same in the editor and in the game. That API is defined once as a TypeScript interface (decision 0008).
 

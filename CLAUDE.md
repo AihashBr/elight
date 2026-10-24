@@ -32,5 +32,8 @@ Game engine focused on local AI. Targets desktop, mobile and the browser.
 - Attributes: behavior split into attribute classes in the project's `attributes/` folder, added to objects from the properties panel (`docs/decisions/0011-object-attributes.md`).
 - File IDs: `files.json` at the project root maps file IDs to paths; the engine refers to files by ID (`docs/decisions/0013-file-ids.md`).
 - AI chat: five-agent pipeline (prompt, planner, object developer, attribute developer, test with a 3-round limit), every step shown in the chat (`docs/decisions/0014-ai-agent-pipeline.md`).
+- Editing: one command history for editor, terminal and AI (undo/redo), autosave, CodeMirror 6 as code editor (`docs/decisions/0015-editing-undo-save-code-editor.md`).
+- 3D engine (`docs/decisions/0016-3d-engine.md`).
+- Styles: centralized in `project/src/styles/` (tokens, breakpoints, base styles for buttons, inputs, cards); components keep only their own layout (`docs/decisions/0017-central-styles.md`).
 
-Game type, 2D/3D and wrapper (Tauri/Electron/Capacitor) are still open; see `docs/ideas.md`.
+Game type, initial audience and wrapper (Tauri/Electron/Capacitor) are still open; see `docs/ideas.md`.
