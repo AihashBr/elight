@@ -1,44 +1,44 @@
 ---
 name: elight-game-hud
-description: Design de HUD e UI dentro do jogo (legibilidade, safe areas, escala, feedback, diálogo de NPC com IA local, estados de carregamento do modelo). Use ao criar telas, menus, HUD ou interfaces de diálogo do jogo.
+description: In-game HUD and UI design (legibility, safe areas, scaling, feedback, local-AI NPC dialogue, model loading states). Use when creating game screens, menus, HUD or dialogue interfaces.
 ---
 
-# HUD e UI de jogo
+# HUD and game UI
 
-UI de jogo é lida em movimento, a distância e sob pressão. Menos elementos, mais contraste, feedback imediato.
+Game UI is read in motion, at a distance and under pressure. Fewer elements, more contrast, immediate feedback.
 
-## Legibilidade
+## Legibility
 
-- Texto mínimo: 16 px a 1080p (escalar com a resolução). Contorno ou sombra suave sobre cenas variáveis, ou painel translúcido atrás do texto.
-- Contraste ≥ 4.5:1 contra o **pior** fundo possível da cena, não o médio.
-- Nunca depender só de cor: acrescentar ícone, forma ou texto.
-- Opções de acessibilidade: escala de UI, daltonismo, legendas sempre ligáveis, reduzir movimento.
+- Minimum text: 16 px at 1080p (scale with resolution). Outline or soft shadow over variable scenes, or a translucent panel behind the text.
+- Contrast >= 4.5:1 against the **worst** possible background in the scene, not the average one.
+- Never rely on color alone: add an icon, shape or text.
+- Accessibility options: UI scale, colorblind modes, always-available subtitles, reduced motion.
 
 ## Layout
 
-- **Safe area:** 5% de margem nas bordas em TV; respeitar notch e barras do sistema em mobile.
-- Informação crítica nos cantos e perto do centro apenas quando indispensável (mira, interação).
-- Âncoras por canto/borda e escala por DPI; testar em 16:9, 21:9, 4:3 e retrato.
-- Mostrar só o que é relevante agora; esconder HUD em exploração calma e revelar sob mudança de estado.
+- **Safe area:** 5% margin at the edges on TV; respect notches and system bars on mobile.
+- Critical information in the corners and near the center only when essential (crosshair, interaction).
+- Anchor to corners/edges and scale by DPI; test at 16:9, 21:9, 4:3 and portrait.
+- Show only what is relevant now; hide the HUD during calm exploration and reveal it on state change.
 
 ## Feedback
 
-- Toda ação do jogador tem resposta em < 100 ms (som, cor, escala, partícula).
-- Mudanças de valor (vida, munição) animam por 150–300 ms e destacam o delta.
-- Foco de menu sempre visível; navegação por gamepad, teclado e mouse equivalentes.
+- Every player action gets a response in < 100 ms (sound, color, scale, particle).
+- Value changes (health, ammo) animate for 150-300 ms and highlight the delta.
+- Menu focus is always visible; gamepad, keyboard and mouse navigation are equivalent.
 
-## Diálogo de NPC com IA local
+## NPC dialogue with local AI
 
-- **Latência é parte do design.** O modelo local pode levar centenas de ms a segundos: mostrar indicador de "pensando" no NPC (gesto, reticências animadas) e **streamar** tokens em vez de esperar a resposta inteira.
-- Texto aparece em ritmo legível (typewriter configurável, pular com um botão).
-- Entrada do jogador: opções sugeridas + campo livre; sempre oferecer saída rápida.
-- Falha ou modelo indisponível: o NPC tem fala de reserva ("…") e o jogo continua; nunca travar a cena.
-- Limites e segurança: tamanho máximo de resposta, filtro de conteúdo e reset de contexto, tudo configurável.
-- Histórico acessível (log de conversa) e indicação de quem fala (nome, retrato, cor do balão).
+- **Latency is part of the design.** A local model can take hundreds of ms to seconds: show a "thinking" indicator on the NPC (gesture, animated ellipsis) and **stream** tokens instead of waiting for the full reply.
+- Text appears at a readable pace (configurable typewriter, skip with one button).
+- Player input: suggested options + free text field; always offer a quick exit.
+- Failure or missing model: the NPC has a fallback line ("...") and the game continues; never freeze the scene.
+- Limits and safety: max response length, content filter and context reset, all configurable.
+- Accessible history (conversation log) and a clear speaker indication (name, portrait, bubble color).
 
-## Carregamento e estado do modelo
+## Loading and model state
 
-- Carregar modelo em segundo plano com barra/etapas ("carregando modelo… alocando VRAM…"), jogo jogável antes se possível.
-- Mostrar requisitos mínimos e aviso se a máquina não aguenta; oferecer modelo menor automaticamente.
+- Load the model in the background with a bar/steps ("loading model... allocating VRAM..."), keeping the game playable earlier if possible.
+- Show minimum requirements and a warning if the machine cannot cope; automatically offer a smaller model.
 
-Tokens e movimento: ver `elight-design-tokens`. Princípios gerais: `elight-design-principles`.
+Tokens and motion: see `elight-design-tokens`. General principles: `elight-design-principles`.

@@ -1,48 +1,48 @@
 ---
 name: elight-design-principles
-description: Princípios de design visual da Elight (identidade, hierarquia, ritmo, consistência, movimento). Use antes de criar ou revisar qualquer tela, página, protótipo, UI de editor ou HUD.
+description: Elight visual design principles (identity, hierarchy, rhythm, consistency, motion). Use before creating or reviewing any screen, page, prototype, editor UI or HUD.
 ---
 
-# Princípios de design da Elight
+# Elight design principles
 
-A Elight é uma engine com IA local. O visual deve passar três coisas: **leveza** (o nome), **precisão** (é uma ferramenta de trabalho) e **transparência da IA** (o usuário sempre vê o que o modelo está fazendo).
+Elight is an engine built around local AI. The look should convey three things: **lightness** (the name), **precision** (it is a working tool) and **AI transparency** (the user always sees what the model is doing).
 
-## Identidade
+## Identity
 
-- Base escura e neutra, com **uma** cor de destaque (luz). A luz é o motivo visual: brilho suave, gradientes de emissão, nunca neon pesado.
-- Superfícies planas com separação por contraste de luminosidade, não por bordas grossas ou sombras pesadas.
-- Estados de IA têm linguagem própria e consistente: pensando (pulso lento), gerando (progresso), pronto (estático), erro (cor semântica + texto).
+- Dark, neutral base with **one** accent color (light). Light is the visual motif: soft glow, emissive gradients, never heavy neon.
+- Flat surfaces separated by luminance contrast, not thick borders or heavy shadows.
+- AI states have their own consistent language: thinking (slow pulse), generating (progress), ready (static), error (semantic color + text).
 
-## Hierarquia
+## Hierarchy
 
-1. Um foco por tela. O olho deve saber onde começar em menos de um segundo.
-2. Tamanho, peso e contraste nessa ordem para criar ênfase. Não usar cor sozinha.
-3. Agrupar por proximidade antes de usar caixas. Espaço em branco separa melhor que linha.
-4. No máximo 3 níveis de texto por tela (título, corpo, auxiliar).
+1. One focus per screen. The eye should know where to start in under a second.
+2. Size, weight and contrast, in that order, create emphasis. Do not rely on color alone.
+3. Group by proximity before reaching for boxes. Whitespace separates better than lines.
+4. At most 3 text levels per screen (title, body, secondary).
 
-## Ritmo e consistência
+## Rhythm and consistency
 
-- Grade de 4 px; espaçamentos só da escala dos tokens (ver `elight-design-tokens`).
-- Mesmo componente, mesma aparência, em qualquer lugar. Antes de criar um novo, procurar um existente.
-- Alinhamento a uma grade comum; nada "quase alinhado".
+- 4 px grid; spacing only from the token scale (see `elight-design-tokens`).
+- Same component, same look, everywhere. Look for an existing one before creating a new one.
+- Align to a shared grid; nothing "almost aligned".
 
-## Movimento
+## Motion
 
-- Movimento explica mudança de estado, não decora. 120–200 ms para microinterações, 250–400 ms para transições de painel.
-- Easing de saída (`cubic-bezier(0.2, 0, 0, 1)`) ao entrar, de entrada ao sair.
-- Respeitar `prefers-reduced-motion`: trocar animação por fade ou corte.
+- Motion explains state changes; it does not decorate. 120-200 ms for micro-interactions, 250-400 ms for panel transitions.
+- Ease-out (`cubic-bezier(0.2, 0, 0, 1)`) when entering, ease-in when leaving.
+- Respect `prefers-reduced-motion`: swap animation for a fade or a cut.
 
-## Acessibilidade (inegociável)
+## Accessibility (non-negotiable)
 
-- Contraste de texto ≥ 4.5:1 (3:1 para texto grande e ícones).
-- Foco visível em tudo que é interativo; navegação completa por teclado.
-- Nenhuma informação só por cor. Alvos de toque ≥ 44 px em UI de jogo/touch.
+- Text contrast >= 4.5:1 (3:1 for large text and icons).
+- Visible focus on everything interactive; full keyboard navigation.
+- No information by color alone. Touch targets >= 44 px in game/touch UI.
 
-## Checklist antes de entregar
+## Checklist before delivering
 
-- [ ] Um foco claro por tela
-- [ ] Só tokens, nenhum valor mágico de cor/espaço
-- [ ] Tema escuro e claro conferidos
-- [ ] Estados: padrão, hover, foco, ativo, desabilitado, carregando, vazio, erro
-- [ ] Testado em largura estreita (360 px) e ampla (1920 px)
-- [ ] Contraste e teclado verificados
+- [ ] One clear focus per screen
+- [ ] Tokens only, no magic color/spacing values
+- [ ] Dark and light themes checked
+- [ ] States: default, hover, focus, active, disabled, loading, empty, error
+- [ ] Tested at narrow (360 px) and wide (1920 px) widths
+- [ ] Contrast and keyboard verified

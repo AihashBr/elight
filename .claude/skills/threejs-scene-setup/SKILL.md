@@ -1,13 +1,13 @@
 ---
 name: threejs-scene-setup
-description: Configuração correta de uma cena Three.js (renderer, espaço de cor, tone mapping, câmera, loop, resize, controles, descarte de recursos). Use ao criar ou revisar qualquer cena, viewer ou protótipo em Three.js.
+description: Correct Three.js scene setup (renderer, color space, tone mapping, camera, loop, resize, controls, resource disposal). Use when creating or reviewing any Three.js scene, viewer or prototype.
 ---
 
-# Three.js: setup de cena
+# Three.js: scene setup
 
-Versão alvo: r170+. Instalar com `npm i three` e importar de módulos (`three`, `three/addons/...`).
+Target version: r170+. Install with `npm i three` and import as modules (`three`, `three/addons/...`).
 
-## Esqueleto
+## Skeleton
 
 ```js
 import * as THREE from 'three';
@@ -16,8 +16,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const canvas = document.querySelector('#view');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.outputColorSpace = THREE.SRGBColorSpace;      // padrão, manter
-renderer.toneMapping = THREE.ACESFilmicToneMapping;    // ou AgXToneMapping / NeutralToneMapping
+renderer.outputColorSpace = THREE.SRGBColorSpace;      // default, keep it
+renderer.toneMapping = THREE.ACESFilmicToneMapping;    // or AgXToneMapping / NeutralToneMapping
 renderer.toneMappingExposure = 1.0;
 
 const scene = new THREE.Scene();
@@ -30,7 +30,7 @@ controls.enableDamping = true;
 function resize() {
   const { clientWidth: w, clientHeight: h } = canvas;
   if (canvas.width !== w * renderer.getPixelRatio() || canvas.height !== h * renderer.getPixelRatio()) {
-    renderer.setSize(w, h, false);          // false: não mexe no CSS
+    renderer.setSize(w, h, false);          // false: do not touch CSS
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
@@ -46,18 +46,18 @@ renderer.setAnimationLoop(() => {
 });
 ```
 
-## Regras
+## Rules
 
-- **Cor:** hex de design tokens entram como sRGB e o Three converte para linear (`ColorManagement` já vem ligado). Texturas de cor (albedo, emissive) usam `texture.colorSpace = THREE.SRGBColorSpace`; mapas de dados (normal, roughness, metalness, AO) ficam em `NoColorSpace`.
-- **Loop:** usar `renderer.setAnimationLoop` (funciona também com WebXR) e `dt` para toda animação; nunca avanço por frame.
-- **Resize:** observar o elemento (`ResizeObserver`) em vez de só `window.resize` quando o canvas está em painel acoplável do editor.
-- **Pixel ratio:** limitar a 2; em GPUs fracas permitir resolução dinâmica.
-- **Câmera:** `near` o maior possível e `far` o menor possível para preservar precisão de profundidade; para mundos grandes considerar `logarithmicDepthBuffer` ou origem flutuante.
-- **Controles:** `OrbitControls` para viewers; para o editor, controles próprios com atalhos do `elight-editor-ui`.
+- **Color:** hex values from design tokens enter as sRGB and Three converts them to linear (`ColorManagement` is on by default). Color textures (albedo, emissive) use `texture.colorSpace = THREE.SRGBColorSpace`; data maps (normal, roughness, metalness, AO) stay `NoColorSpace`.
+- **Loop:** use `renderer.setAnimationLoop` (also works with WebXR) and `dt` for all animation; never advance per frame.
+- **Resize:** observe the element (`ResizeObserver`) instead of only `window.resize` when the canvas lives in a dockable editor panel.
+- **Pixel ratio:** cap at 2; allow dynamic resolution on weak GPUs.
+- **Camera:** `near` as large and `far` as small as possible to preserve depth precision; for large worlds consider `logarithmicDepthBuffer` or a floating origin.
+- **Controls:** `OrbitControls` for viewers; for the editor, custom controls with the shortcuts from `elight-editor-ui`.
 
-## Descarte (evitar vazamento de memória)
+## Disposal (avoid memory leaks)
 
-Remover um objeto da cena **não** libera a GPU. Ao descartar:
+Removing an object from the scene does **not** free GPU memory. When discarding:
 
 ```js
 function disposeObject(root) {
@@ -72,14 +72,14 @@ function disposeObject(root) {
 }
 ```
 
-Também chamar `renderer.dispose()` e `controls.dispose()` ao destruir a view. Monitorar `renderer.info.memory` (geometries/textures) durante desenvolvimento.
+Also call `renderer.dispose()` and `controls.dispose()` when destroying the view. Watch `renderer.info.memory` (geometries/textures) during development.
 
-## Carregamento de assets
+## Asset loading
 
-- Preferir **glTF/GLB** com `GLTFLoader`; compressão com Draco/Meshopt e texturas KTX2 (`KTX2Loader`) para reduzir tamanho e VRAM.
-- Reutilizar `LoadingManager` para barra de progresso única.
-- Cachear por URL; clonar com `SkeletonUtils.clone` para modelos com esqueleto.
+- Prefer **glTF/GLB** with `GLTFLoader`; Draco/Meshopt compression and KTX2 textures (`KTX2Loader`) reduce size and VRAM.
+- Reuse a single `LoadingManager` for one progress bar.
+- Cache by URL; clone skinned models with `SkeletonUtils.clone`.
 
 ## WebGPU
 
-`WebGPURenderer` e materiais TSL existem (`three/webgpu`, `three/tsl`) e são o caminho futuro. Usar quando o alvo permitir e o recurso (compute, TSL) justificar; manter WebGL como fallback.
+`WebGPURenderer` and TSL materials exist (`three/webgpu`, `three/tsl`) and are the future path. Use them when the target allows and the feature (compute, TSL) justifies it; keep WebGL as a fallback.

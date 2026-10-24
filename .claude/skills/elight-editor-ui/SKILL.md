@@ -1,59 +1,59 @@
 ---
 name: elight-editor-ui
-description: Padrões de interface do editor da Elight (layout de painéis, viewport, hierarquia de cena, inspetor, console de IA, atalhos, densidade). Use ao projetar ou implementar qualquer parte do editor.
+description: Elight editor interface patterns (panel layout, viewport, scene hierarchy, inspector, AI console, shortcuts, density). Use when designing or implementing any part of the editor.
 ---
 
-# UI do editor
+# Editor UI
 
-O editor é ferramenta de uso longo e intenso. Prioridades: **densidade legível, velocidade, previsibilidade**.
+The editor is a tool for long, intensive use. Priorities: **readable density, speed, predictability**.
 
-## Layout padrão
+## Default layout
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│ Barra de menu / comandos (Ctrl+K)                    │
+│ Menu bar / commands (Ctrl+K)                         │
 ├────────┬─────────────────────────────┬───────────────┤
-│Hierar- │                             │  Inspetor     │
-│quia    │        Viewport             │  (propriedades│
-│ de     │                             │   do seleci-  │
-│ cena   │                             │   onado)      │
+│Scene   │                             │  Inspector    │
+│hier-   │        Viewport             │  (properties  │
+│archy   │                             │   of the      │
+│        │                             │   selection)  │
 ├────────┴─────────────────────────────┴───────────────┤
-│ Assets │ Console │ IA (modelos, fila, uso de VRAM)   │
+│ Assets │ Console │ AI (models, queue, VRAM usage)    │
 └──────────────────────────────────────────────────────┘
 ```
 
-- Painéis redimensionáveis, acopláveis e com estado persistido. O viewport recebe todo o espaço que sobrar.
-- Largura mínima de painel lateral: 240 px. Colapsar em ícones abaixo de 1100 px de janela.
+- Panels are resizable, dockable and persist their state. The viewport takes all remaining space.
+- Minimum side panel width: 240 px. Collapse to icons below 1100 px window width.
 
-## Componentes
+## Components
 
-- **Hierarquia:** árvore com expandir/recolher por teclado (setas), arrastar para reparentar, ícone por tipo, olho (visibilidade) e cadeado, renomear com F2.
-- **Inspetor:** seções recolhíveis por componente; rótulo à esquerda, campo à direita; campos numéricos arrastáveis (arrastar no rótulo ajusta valor), Shift = 10×, Alt = 0,1×; botão de reset por propriedade alterada.
-- **Viewport:** gizmos (mover/rotacionar/escalar) em W/E/R, grade com fade na distância, indicador de eixos no canto, estatísticas (FPS, draw calls) ocultáveis.
-- **Paleta de comandos (Ctrl+K):** toda ação do editor deve ser alcançável por aqui.
-- **Toasts:** só para confirmação e erro recuperável; erros de build/IA vão para o console com detalhe completo.
+- **Hierarchy:** tree with keyboard expand/collapse (arrows), drag to reparent, per-type icon, eye (visibility) and lock, rename with F2.
+- **Inspector:** collapsible section per component; label on the left, field on the right; draggable numeric fields (drag the label to adjust), Shift = 10x, Alt = 0.1x; per-property reset button when changed.
+- **Viewport:** gizmos (move/rotate/scale) on W/E/R, grid fading with distance, axes indicator in the corner, hideable stats (FPS, draw calls).
+- **Command palette (Ctrl+K):** every editor action must be reachable from here.
+- **Toasts:** only for confirmation and recoverable errors; build/AI errors go to the console with full detail.
 
-## IA local no editor
+## Local AI in the editor
 
-O usuário precisa ver o que o modelo faz e o que custa:
+Users need to see what the model does and what it costs:
 
-- Painel de IA mostra: modelo carregado, quantização, VRAM/RAM em uso, fila de inferências, tokens/s.
-- Toda geração tem **cancelar**, **progresso** e **desfazer** (entra na pilha de undo como uma operação).
-- Conteúdo gerado por IA é marcado visualmente (selo discreto) até o usuário aceitar.
-- Nunca bloquear a UI esperando o modelo; inferência é assíncrona e o editor continua responsivo.
-- Estado de modelo ausente: explicar o que falta e oferecer o botão de baixar/selecionar, não só mostrar erro.
+- The AI panel shows: loaded model, quantization, VRAM/RAM in use, inference queue, tokens/s.
+- Every generation has **cancel**, **progress** and **undo** (it is a single operation on the undo stack).
+- AI-generated content carries a subtle badge until the user accepts it.
+- Never block the UI waiting for the model; inference is asynchronous and the editor stays responsive.
+- Missing model state: explain what is missing and offer a download/select button, not just an error.
 
-## Interação
+## Interaction
 
-- Undo/redo em tudo que muda a cena. Seleção também deve ser desfazível.
-- Atalhos seguem convenções de editores 3D (W/E/R, F para focar, Delete, Ctrl+D duplicar, Ctrl+Z/Y).
-- Drag & drop de assets no viewport e na hierarquia, com pré-visualização do alvo.
-- Estados vazios ensinam: dizer o que é a área e dar a ação principal.
+- Undo/redo for everything that changes the scene. Selection is undoable too.
+- Shortcuts follow 3D editor conventions (W/E/R, F to focus, Delete, Ctrl+D duplicate, Ctrl+Z/Y).
+- Drag and drop assets onto the viewport and hierarchy, with a preview of the target.
+- Empty states teach: say what the area is and give the primary action.
 
-## Densidade
+## Density
 
-- Altura de linha padrão 24 px; modo compacto 20 px; modo confortável 32 px (configurável).
-- Tipografia `--fs-sm` (12 px) na maior parte do inspetor; `--fs-md` para conteúdo principal.
-- Ícones de 16 px com traço consistente; rótulos de texto sempre que o ícone for ambíguo.
+- Default row height 24 px; compact 20 px; comfortable 32 px (configurable).
+- `--fs-sm` (12 px) for most of the inspector; `--fs-md` for main content.
+- 16 px icons with a consistent stroke; always add a text label when the icon is ambiguous.
 
-Cores e espaçamentos: ver `elight-design-tokens`.
+Colors and spacing: see `elight-design-tokens`.

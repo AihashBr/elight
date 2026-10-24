@@ -1,13 +1,13 @@
 ---
 name: threejs-shaders-postprocessing
-description: Shaders customizados (ShaderMaterial, onBeforeCompile, TSL) e pós-processamento (EffectComposer, bloom, SMAA, vinheta) em Three.js. Use ao criar efeitos visuais, brilho de luz, dissolve, gradientes ou qualquer passe de pós-processo.
+description: Custom shaders (ShaderMaterial, onBeforeCompile, TSL) and post-processing (EffectComposer, bloom, SMAA, vignette) in Three.js. Use when creating visual effects, light glow, dissolve, gradients or any post-process pass.
 ---
 
-# Three.js: shaders e pós-processamento
+# Three.js: shaders and post-processing
 
-## Quando escrever shader
+## When to write a shader
 
-Primeiro tentar: propriedades do material, `emissive` + bloom, texturas, `onBeforeCompile`. Escrever shader completo só quando o efeito não cabe nisso.
+Try first: material properties, `emissive` + bloom, textures, `onBeforeCompile`. Write a full shader only when the effect does not fit those.
 
 ## ShaderMaterial
 
@@ -38,18 +38,18 @@ const material = new THREE.ShaderMaterial({
   depthWrite: false,
   blending: THREE.AdditiveBlending,
 });
-// no loop: material.uniforms.uTime.value = clock.elapsedTime;
+// in the loop: material.uniforms.uTime.value = clock.elapsedTime;
 ```
 
-- Incluir `#include <colorspace_fragment>` (e `<tonemapping_fragment>` se quiser tone mapping) para respeitar o espaço de cor de saída. `RawShaderMaterial` não injeta nada.
-- Passar valores por **uniforms**; nunca recompilar o shader por frame.
-- Uniforms de cor: `THREE.Color` já está em linear no Three moderno.
-- Evitar `if` divergentes e laços longos no fragment; preferir `mix`, `step`, `smoothstep`.
-- Precisão: `precision highp float;` quando o alvo for mobile e houver artefatos.
+- Include `#include <colorspace_fragment>` (and `<tonemapping_fragment>` if you want tone mapping) to respect the output color space. `RawShaderMaterial` injects nothing.
+- Pass values through **uniforms**; never recompile the shader per frame.
+- Color uniforms: `THREE.Color` is already linear in modern Three.
+- Avoid divergent `if`s and long loops in the fragment shader; prefer `mix`, `step`, `smoothstep`.
+- Precision: add `precision highp float;` when targeting mobile and seeing artifacts.
 
-## Estender materiais PBR
+## Extending PBR materials
 
-Para manter luz e sombra, modificar o material padrão:
+To keep lighting and shadows, modify the standard material:
 
 ```js
 material.onBeforeCompile = (shader) => {
@@ -63,11 +63,11 @@ material.onBeforeCompile = (shader) => {
 };
 ```
 
-## TSL e WebGPU
+## TSL and WebGPU
 
-Em `three/tsl` os efeitos são grafos de nós em JS (`color`, `uv`, `time`, `mix`…), compilados para WGSL ou GLSL. Preferir TSL em código novo que já usa `WebGPURenderer`; GLSL cru continua válido no WebGL.
+In `three/tsl`, effects are node graphs in JS (`color`, `uv`, `time`, `mix`...), compiled to WGSL or GLSL. Prefer TSL in new code that already uses `WebGPURenderer`; raw GLSL remains valid on WebGL.
 
-## Pós-processamento
+## Post-processing
 
 ```js
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -77,20 +77,20 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.6, 0.4, 0.85)); // força, raio, limiar
-composer.addPass(new OutputPass());   // tone mapping + sRGB no final
-// loop: composer.render() no lugar de renderer.render()
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.6, 0.4, 0.85)); // strength, radius, threshold
+composer.addPass(new OutputPass());   // tone mapping + sRGB at the end
+// loop: composer.render() instead of renderer.render()
 // resize: composer.setSize(w, h)
 ```
 
-- Ordem: Render → efeitos em espaço linear (bloom, SSAO) → `OutputPass` (tone mapping/cor) → efeitos em espaço de tela (grão, vinheta) se precisar.
-- Bloom seletivo: limiar alto e só materiais emissivos acima de 1.0 brilham (usar `emissiveIntensity > 1`).
-- Anti-aliasing com composer: o MSAA do renderer não se aplica; usar `SMAAPass` ou `renderTarget` com `samples: 4`.
-- Cada passe custa fill-rate; medir com o painel do `threejs-performance` e oferecer qualidade ajustável.
+- Order: Render -> effects in linear space (bloom, SSAO) -> `OutputPass` (tone mapping/color) -> screen-space effects (grain, vignette) if needed.
+- Selective bloom: high threshold, and only emissive materials above 1.0 glow (use `emissiveIntensity > 1`).
+- Anti-aliasing with a composer: the renderer's MSAA does not apply; use `SMAAPass` or a render target with `samples: 4`.
+- Each pass costs fill-rate; measure with the tools in `threejs-performance` and offer adjustable quality.
 
-## Efeitos úteis para a identidade Elight
+## Useful effects for the Elight identity
 
-- **Halo de luz:** sprite/plano com shader radial aditivo (acima).
-- **Dissolve/revelar:** `smoothstep` de ruído com `discard` ou alfa, borda emissiva na cor de destaque.
-- **Grade com fade:** shader de grade infinita que some com a distância, para o viewport do editor.
-- **Partículas de "pensamento da IA":** `Points` com `ShaderMaterial`, posição animada na GPU por `uTime`.
+- **Light halo:** additive sprite/plane with a radial shader (above).
+- **Dissolve/reveal:** `smoothstep` of noise with `discard` or alpha, emissive edge in the accent color.
+- **Fading grid:** infinite grid shader that fades with distance, for the editor viewport.
+- **"AI thinking" particles:** `Points` with a `ShaderMaterial`, position animated on the GPU by `uTime`.
