@@ -12,9 +12,11 @@ Constraint: desktop + mobile + browser (decision 0001).
 
 Resolved: TypeScript only, in-browser local AI (decisions 0002 and 0003). Option A, with native wrappers for desktop and mobile.
 
-## Model choice (open)
+## Model choice
 
-- Candidate: Qwen at about 3B parameters, quantized (about 2 GB at 4-bit; heavy for mobile).
+Resolved: Qwen, about 2B parameters, with WebLLM (decision 0012). Notes below are kept for later models.
+
+- Earlier candidate: Qwen at about 3B parameters, quantized (about 2 GB at 4-bit; heavy for mobile).
 - Question: a Coder variant is tuned for code; for NPC dialogue an Instruct variant is likely better. Coder fits editor-side code/script generation. Possibly two models, or one Instruct model for both.
 - Keep a smaller tier (about 0.5B-1.5B) for weak devices.
 

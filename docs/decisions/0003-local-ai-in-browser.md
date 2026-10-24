@@ -5,7 +5,7 @@
 
 ## Decision
 
-AI runs on the player's device, including in the browser. There is no server or back-end. The first target is a small model of about 3B parameters (Qwen family; exact variant still open, see `docs/ideas.md`).
+AI runs on the player's device, including in the browser. There is no server or back-end. The first target is a small model: Qwen, about 2B parameters, run with WebLLM (updated by decision 0012).
 
 ## Why
 
