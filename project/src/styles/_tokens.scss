@@ -1,0 +1,112 @@
+// Elight design tokens: single source of truth for visual values.
+// See .claude/skills/elight-design-tokens for the rules behind them.
+
+@mixin light-values {
+  --bg: #f6f7fa;
+  --surface-1: #ffffff;
+  --surface-2: #f0f2f7;
+  --surface-3: #e6e9f1;
+  --border: #d3d8e4;
+
+  --text: #14171f;
+  --text-muted: #4a5166;
+  --text-faint: #7a8197;
+
+  --accent: #b87900;
+  // Dark ink keeps >= 4.5:1 on the darker light-theme accent (white would be ~3:1).
+  --accent-ink: #1a1400;
+  --accent-glow: color-mix(in srgb, var(--accent) 22%, transparent);
+
+  --shadow-1: 0 1px 2px rgb(20 23 31 / 0.08);
+  --shadow-2: 0 8px 24px rgb(20 23 31 / 0.1);
+
+  color-scheme: light;
+}
+
+:root {
+  // color: surfaces (back to front)
+  --bg: #0e1014;
+  --surface-1: #151821;
+  --surface-2: #1c202b;
+  --surface-3: #252a38;
+  --border: #2d3344;
+
+  // color: text
+  --text: #e8eaf0;
+  --text-muted: #9aa1b5;
+  --text-faint: #6b7288;
+
+  // color: accent (the "light")
+  --accent: #ffd166;
+  --accent-ink: #1a1400;
+  --accent-glow: color-mix(in srgb, var(--accent) 35%, transparent);
+
+  // color: semantic
+  --ok: #5ad19a;
+  --warn: #f2a65a;
+  --danger: #f0647a;
+  --info: #6cb4ff;
+
+  // typography
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 14px;
+  --fs-lg: 18px;
+  --fs-xl: 24px;
+  --fs-2xl: 36px;
+  --fs-display: clamp(36px, 6vw, 64px);
+  --lh-tight: 1.2;
+  --lh-body: 1.5;
+
+  // spacing (4 px grid)
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-24: 96px;
+
+  // shape
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-full: 999px;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.45);
+
+  // motion
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 350ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  // layout
+  --content-max: 1200px;
+  --gutter: clamp(16px, 4vw, 48px);
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  @include light-values;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    @include light-values;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}
